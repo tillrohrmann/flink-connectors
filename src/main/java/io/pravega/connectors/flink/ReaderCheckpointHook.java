@@ -13,6 +13,7 @@ import io.pravega.client.admin.ReaderGroupManager;
 import io.pravega.client.stream.Checkpoint;
 import io.pravega.client.stream.ReaderGroup;
 
+import io.pravega.connectors.flink.compatibility.FlinkFutureAdapter;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.flink.core.io.SimpleVersionedSerializer;
@@ -33,7 +34,7 @@ import static com.google.common.base.Preconditions.checkNotNull;
  * checkpoints in on a Pravega ReaderGroup.
  */
 @Slf4j
-class ReaderCheckpointHook implements MasterTriggerRestoreHook<Checkpoint> {
+class ReaderCheckpointHook implements MasterTriggerRestoreHook<Checkpoint>, Foobar {
 
     /** The prefix of checkpoint names */
     private static final String PRAVEGA_CHECKPOINT_NAME_PREFIX = "PVG-CHK-";
@@ -73,7 +74,7 @@ class ReaderCheckpointHook implements MasterTriggerRestoreHook<Checkpoint> {
     }
 
     @Override
-    public CompletableFuture<Checkpoint> triggerCheckpoint(
+    public FlinkFutureAdapter<Checkpoint> triggerCheckpoint(
             long checkpointId, long checkpointTimestamp, Executor executor) throws Exception {
 
         final String checkpointName = createCheckpointName(checkpointId);
@@ -95,7 +96,7 @@ class ReaderCheckpointHook implements MasterTriggerRestoreHook<Checkpoint> {
         // we make sure the executor is shut down after the future completes
         checkpointResult.handle((success, failure) -> scheduledExecutorService.shutdownNow());
 
-        return checkpointResult;
+        return new FlinkFutureAdapter<>(checkpointResult);
     }
 
     @Override

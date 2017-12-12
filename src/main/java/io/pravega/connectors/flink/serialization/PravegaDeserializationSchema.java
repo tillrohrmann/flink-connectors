@@ -16,9 +16,9 @@ import java.io.Serializable;
 import java.nio.ByteBuffer;
 
 import org.apache.flink.api.common.functions.InvalidTypesException;
+import org.apache.flink.api.common.serialization.DeserializationSchema;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.common.serialization.DeserializationSchema;
 
 import static org.apache.flink.util.Preconditions.checkArgument;
 import static org.apache.flink.util.Preconditions.checkNotNull;
@@ -30,7 +30,7 @@ import static org.apache.flink.util.Preconditions.checkNotNull;
  * exposes the produced type (TypeInformation) to allow Flink to configure its internal
  * serialization and persistence stack.
  */
-public class PravegaDeserializationSchema<T> 
+public class PravegaDeserializationSchema<T>
         implements DeserializationSchema<T>, WrappingSerializer<T> {
 
     // The TypeInformation of the produced type
