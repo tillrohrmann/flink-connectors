@@ -24,10 +24,12 @@ import org.apache.flink.api.common.functions.StoppableFunction;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.typeutils.ResultTypeQueryable;
 import org.apache.flink.runtime.checkpoint.MasterTriggerRestoreHook;
+import org.apache.flink.runtime.rescaling.OperatorRescalingPolicy;
 import org.apache.flink.streaming.api.checkpoint.ExternallyInducedSource;
 import org.apache.flink.streaming.api.datastream.SingleOutputStreamOperator;
 import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
 import org.apache.flink.api.common.serialization.DeserializationSchema;
+import org.apache.flink.streaming.api.rescaling.WithRescalingPolicy;
 import org.apache.flink.util.FlinkException;
 
 import java.net.URI;
@@ -46,7 +48,7 @@ import static io.pravega.connectors.flink.util.FlinkPravegaUtils.getDefaultReade
 @Slf4j
 public class FlinkPravegaReader<T>
         extends RichParallelSourceFunction<T>
-        implements ResultTypeQueryable<T>, StoppableFunction, ExternallyInducedSource<T, Checkpoint> {
+        implements ResultTypeQueryable<T>, StoppableFunction, ExternallyInducedSource<T, Checkpoint>, WithRescalingPolicy {
 
     private static final long serialVersionUID = 1L;
 
@@ -315,5 +317,18 @@ public class FlinkPravegaReader<T>
         }
 
         checkpointTrigger.triggerCheckpoint(checkpointId);
+    }
+
+    // ------------------------------------------------------------------------
+    //  rescaling policy
+    // ------------------------------------------------------------------------
+
+    @Override
+    public OperatorRescalingPolicy createOperatorRescalingPolicy(ScheduledExecutorService scheduledExecutorService) {
+        return new ReaderOperatorRescalingPolicy(
+                this.readerGroupName,
+                this.scopeName,
+                this.controllerURI,
+                scheduledExecutorService);
     }
 }
