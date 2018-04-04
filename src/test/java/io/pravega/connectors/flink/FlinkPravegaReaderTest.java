@@ -9,24 +9,21 @@
  */
 package io.pravega.connectors.flink;
 
+import org.apache.flink.api.common.restartstrategy.RestartStrategies;
+import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
+import org.apache.flink.streaming.util.serialization.AbstractDeserializationSchema;
+import org.apache.flink.test.util.AbstractTestBase;
+
+import io.pravega.client.stream.EventStreamWriter;
 import io.pravega.connectors.flink.utils.FailingMapper;
 import io.pravega.connectors.flink.utils.IntSequenceExactlyOnceValidator;
 import io.pravega.connectors.flink.utils.NotifyingMapper;
 import io.pravega.connectors.flink.utils.SetupUtils;
 import io.pravega.connectors.flink.utils.SuccessException;
 import io.pravega.connectors.flink.utils.ThrottledIntegerWriter;
-import io.pravega.client.stream.EventStreamWriter;
-
 import lombok.extern.slf4j.Slf4j;
-
 import org.apache.commons.lang3.RandomStringUtils;
-
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.apache.flink.api.common.restartstrategy.RestartStrategies;
-import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.util.StreamingMultipleProgramsTestBase;
-import org.apache.flink.streaming.util.serialization.AbstractDeserializationSchema;
-
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
@@ -42,7 +39,7 @@ import java.util.concurrent.TimeUnit;
  * Automated tests for {@link FlinkPravegaReader}.
  */
 @Slf4j
-public class FlinkPravegaReaderTest extends StreamingMultipleProgramsTestBase {
+public class FlinkPravegaReaderTest extends AbstractTestBase {
 
     // Number of events to produce into the test stream.
     private static final int NUM_STREAM_ELEMENTS = 10000;

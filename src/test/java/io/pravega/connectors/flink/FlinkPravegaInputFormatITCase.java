@@ -10,18 +10,19 @@
 
 package io.pravega.connectors.flink;
 
-import io.pravega.client.stream.EventStreamWriter;
-import io.pravega.connectors.flink.utils.SetupUtils;
-import io.pravega.connectors.flink.utils.ThrottledIntegerWriter;
-import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.flink.api.common.functions.RichMapFunction;
 import org.apache.flink.api.common.restartstrategy.RestartStrategies;
 import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
-import org.apache.flink.streaming.util.StreamingMultipleProgramsTestBase;
 import org.apache.flink.streaming.util.serialization.AbstractDeserializationSchema;
+import org.apache.flink.test.util.AbstractTestBase;
+
+import io.pravega.client.stream.EventStreamWriter;
+import io.pravega.connectors.flink.utils.SetupUtils;
+import io.pravega.connectors.flink.utils.ThrottledIntegerWriter;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -38,7 +39,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
-public class FlinkPravegaInputFormatITCase extends StreamingMultipleProgramsTestBase {
+public class FlinkPravegaInputFormatITCase extends AbstractTestBase {
 
     /** Setup utility */
     private static final SetupUtils SETUP_UTILS = new SetupUtils();
