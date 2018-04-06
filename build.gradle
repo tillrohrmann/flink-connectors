@@ -30,7 +30,6 @@ apply from: 'gradle/jacoco.gradle'
 apply from: 'gradle/maven.gradle'
 
 repositories {
-    mavenLocal()
     if (findProperty("repositoryUrl")) {
         maven {
             url findProperty("repositoryUrl")
@@ -50,6 +49,7 @@ repositories {
             url "https://repository.apache.org/content/repositories/orgapacheflink-1141/"
         }
     }
+    mavenLocal()
 }
 
 configurations.all {
@@ -106,41 +106,41 @@ dependencies {
 }
 
 shadowJar {
-    dependencies {
-        // 'include' specific dependencies in the shadow jar
-        // IMPORTANT: transitive dependencies must be manually listed here!
-        include dependency("com.google.guava:guava")
-        include dependency("org.apache.commons:commons-lang3")
-        include dependency("commons-io:commons-io")
-        include dependency("io.netty:netty")
-        include dependency("io.netty:netty-all")
-        include dependency("io.netty:netty-common")
-        include dependency("io.netty:netty-buffer")
-        include dependency("io.netty:netty-resolver")
-        include dependency("io.netty:netty-transport")
-        include dependency("io.netty:netty-codec")
-        include dependency("io.netty:netty-codec-http")
-        include dependency("io.netty:netty-codec-http2")
-        include dependency("io.netty:netty-codec-socks")
-        include dependency("io.netty:netty-handler")
-        include dependency("io.netty:netty-handler-proxy")
-        include dependency("io.grpc:grpc-core")
-        include dependency("io.grpc:grpc-protobuf")
-        include dependency("io.grpc:grpc-stub")
-        include dependency("io.grpc:grpc-context")
-        include dependency("io.grpc:grpc-netty")
-        include dependency("io.grpc:grpc-protobuf-lite")
-        include dependency("com.google.protobuf:protobuf-java-util")
-        include dependency("com.google.protobuf:protobuf-java")
-        include dependency("com.google.code.gson:gson")
-        include dependency("com.google.instrumentation:instrumentation-api")
-        include dependency("io.pravega:pravega-client")
-        include dependency("io.pravega:pravega-common")
-        include dependency("io.pravega:pravega-shared")
-        include dependency("io.pravega:pravega-shared-metrics")
-        include dependency("io.pravega:pravega-shared-protocol")
-        include dependency("io.pravega:pravega-shared-controller-api")
-    }
+//    dependencies {
+//        // 'include' specific dependencies in the shadow jar
+//        // IMPORTANT: transitive dependencies must be manually listed here!
+//        include dependency("com.google.guava:guava")
+//        include dependency("org.apache.commons:commons-lang3")
+//        include dependency("commons-io:commons-io")
+//        include dependency("io.netty:netty")
+//        include dependency("io.netty:netty-all")
+//        include dependency("io.netty:netty-common")
+//        include dependency("io.netty:netty-buffer")
+//        include dependency("io.netty:netty-resolver")
+//        include dependency("io.netty:netty-transport")
+//        include dependency("io.netty:netty-codec")
+//        include dependency("io.netty:netty-codec-http")
+//        include dependency("io.netty:netty-codec-http2")
+//        include dependency("io.netty:netty-codec-socks")
+//        include dependency("io.netty:netty-handler")
+//        include dependency("io.netty:netty-handler-proxy")
+//        include dependency("io.grpc:grpc-core")
+//        include dependency("io.grpc:grpc-protobuf")
+//        include dependency("io.grpc:grpc-stub")
+//        include dependency("io.grpc:grpc-context")
+//        include dependency("io.grpc:grpc-netty")
+//        include dependency("io.grpc:grpc-protobuf-lite")
+//        include dependency("com.google.protobuf:protobuf-java-util")
+//        include dependency("com.google.protobuf:protobuf-java")
+//        include dependency("com.google.code.gson:gson")
+//        include dependency("com.google.instrumentation:instrumentation-api")
+//        include dependency("io.pravega:pravega-client")
+//        include dependency("io.pravega:pravega-common")
+//        include dependency("io.pravega:pravega-shared")
+//        include dependency("io.pravega:pravega-shared-metrics")
+//        include dependency("io.pravega:pravega-shared-protocol")
+//        include dependency("io.pravega:pravega-shared-controller-api")
+//    }
 
     // Shading the libraries which could cause potential version conflicts with flink.
     relocate "com.google", "io.pravega.shaded.com.google"
